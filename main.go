@@ -20,7 +20,7 @@ func main() {
 	//var min_score int = 0
 	//var max_score int = 0
 	board := [3][3]string{{" ", " ", " "}, {" ", " ", " "}, {" ", " ", " "}}
-	clean_board := [3][3]string{{"X", " ", "O"}, {" ", " ", " "}, {"X", " ", " "}}
+	clean_board := [3][3]string{{"X", " ", "O"}, {" ", " ", " "}, {" ", " ", "X"}}
 	move_test := MakeMove(clean_board)
 	fmt.Println(move_test)
 	fmt.Println("Welcome to Tic-Tac-Toe!")
@@ -74,9 +74,8 @@ func MakeMove(board [3][3]string) Move {
 		for j := 0; j < 3; j++ {
 			if board[i][j] == " " {
 				board[i][j] = max_symbol
-				move := Move{row: i, column: j, score: MinMax(board, max_symbol)}
+				move := Move{row: i, column: j, score: MinMax(board, min_symbol)}
 				board[i][j] = " "
-
 				if best_move.score < move.score {
 					best_move = move
 				}
@@ -125,7 +124,7 @@ func MinMax(board [3][3]string, player string) int {
 			for j := 0; j < 3; j++ {
 				if board[i][j] == " " {
 					board[i][j] = min_symbol
-					best = min(best, MinMax(board, max_symbol))
+					best = min(MinMax(board, max_symbol))
 					board[i][j] = " "
 				}
 			}
@@ -136,7 +135,7 @@ func MinMax(board [3][3]string, player string) int {
 			for j := 0; j < 3; j++ {
 				if board[i][j] == " " {
 					board[i][j] = max_symbol
-					best = max(best, MinMax(board, min_symbol))
+					best = max(MinMax(board, min_symbol))
 					board[i][j] = " "
 				}
 			}
@@ -179,8 +178,15 @@ func EvaluateBoard(board [3][3]string) int {
 	/*
 		Hay que cambiar ya que 1 1 no tiene por que esta puesto todavia y pueden ser las dos esquinas
 	*/
-	if board[0][0] == board[1][1] && board[0][0] == board[2][2] && board[0][0] != " " ||
-		board[0][2] == board[1][1] && board[0][2] == board[2][0] && board[0][2] != " " {
+	if board[0][0] == board[1][1] && board[0][0] == board[2][2] && board[0][0] != " " {
+		if board[1][1] == min_symbol {
+			return -10
+		} else {
+			return 10
+		}
+	}
+
+	if board[0][2] == board[1][1] && board[0][2] == board[2][0] && board[0][2] != " " {
 		if board[1][1] == min_symbol {
 			return -10
 		} else {
