@@ -124,7 +124,7 @@ func MinMax(board [3][3]string, player string) int {
 			for j := 0; j < 3; j++ {
 				if board[i][j] == " " {
 					board[i][j] = min_symbol
-					best = min(MinMax(board, max_symbol))
+					best = min(best, MinMax(board, max_symbol))
 					board[i][j] = " "
 				}
 			}
@@ -135,7 +135,7 @@ func MinMax(board [3][3]string, player string) int {
 			for j := 0; j < 3; j++ {
 				if board[i][j] == " " {
 					board[i][j] = max_symbol
-					best = max(MinMax(board, min_symbol))
+					best = max(best, MinMax(board, min_symbol))
 					board[i][j] = " "
 				}
 			}
