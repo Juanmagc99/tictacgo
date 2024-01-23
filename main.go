@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"runtime"
 )
 
 const min_symbol string = "X"
@@ -17,12 +18,8 @@ type Move struct {
 
 func main() {
 
-	//var min_score int = 0
-	//var max_score int = 0
 	board := [3][3]string{{" ", " ", " "}, {" ", " ", " "}, {" ", " ", " "}}
-	clean_board := [3][3]string{{"X", " ", "O"}, {" ", " ", " "}, {" ", " ", "X"}}
-	move_test := MakeMove(clean_board)
-	fmt.Println(move_test)
+
 	fmt.Println("Welcome to Tic-Tac-Toe!")
 	PrintPet()
 	PrintBoard(board)
@@ -227,7 +224,14 @@ func PrintPet() {
 }
 
 func ClearConsole() {
-	cmd := exec.Command("cmd", "/c", "cls")
-	cmd.Stdout = os.Stdout
-	cmd.Run()
+	so := runtime.GOOS
+	if so == "linux" {
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	} else {
+		cmd := exec.Command("cmd", "/c", "cls")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	}
 }
